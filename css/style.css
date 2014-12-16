@@ -54,13 +54,13 @@ header .shell { position: relative; z-index: 40;}
 /* end of navigation */
 
 /* slider */
-.slider-holder { background:  /*url(images/slider-holder.png)*/ no-repeat center 0; height: 407px; position: relative; z-index: 5; margin-top: -4px; }
+.slider-holder { /*background:  url(images/slider-holder.png) no-repeat center 0;*/ height: 407px; position: relative; z-index: 5; margin-top: -20px; }
 .slider-holder .shell { padding-top: 20px; position: relative; height: 390px; }
 /*.slider-holder .shell span.slider-shadow { background: url(images/slider-shadow.png) no-repeat 0 0; width: 952px; height: 45px; position: absolute; bottom: 0; left: -30px; } */
-.flexslider { border: 1px solid #645c52; height: 344px; width: 950px; position: relative; margin: 0 auto; }
+.flexslider { border: 1px solid #645c52; height: 344px; width: 100%; position: relative; margin: 0 auto;}
 .flexslider ul.slides { list-style: none; list-style-position: outside;  position: relative; overflow: hidden; }
-.flexslider ul.slides li { float: left; height: 344px; width: 950px; position: relative; }
-.flexslider ul.slides li img { width: 950px; height: 344px;}
+.flexslider ul.slides li { float: left; height: 344px; width: 100%; position: relative; }
+.flexslider ul.slides li img { width: 100%; height: 344px;}
 .flexslider ul.slides li .slide-cnt { padding: 24px 20px 22px 23px; position: absolute; top: 0px; right: 0; width: 205px; background: url(images/slide-cnt.png) repeat 0 0; min-height: 299px; }
 .flexslider ul.slides li .slide-cnt h2 {  color: #ccc8bd; font-size: 23px; line-height: 30px; padding-bottom: 20px; }
 .flexslider ul.slides li .slide-cnt p { color: #ccc8bd; font-size: 13px; padding-bottom: 42px; }
