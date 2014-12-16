@@ -27,10 +27,10 @@ h2 { font-size: 22px; font-weight: normal; color: #3c2323; }
 h3 { font-size: 14px; }
 
 .shell { width: 890px; margin: 0 auto; }
-header { background: url(images/header.png) no-repeat center 0; height: 82px; }
+header { background: url(images/hfig.jpg) no-repeat center 8px; height: 138px; }
 header .shell { position: relative; z-index: 40;}
-#logo { width: 126px; position: absolute; top: 12px; left: 0; font-size: 0; line-height: 0; }
-#logo a { height: 59px; display: block; background: url(images/logo.png) no-repeat 0 0; text-indent: -4000px; }
+/*#logo { width: 126px; position: absolute; top: 12px; left: 0; font-size: 0; line-height: 0; }
+#logo a { height: 59px; display: block; background: url(images/logo.png) no-repeat 0 0; text-indent: -4000px; } */
 
 /* contact */
 .contact { float: right; padding-top: 30px; }
@@ -44,7 +44,7 @@ header .shell { position: relative; z-index: 40;}
 /* navigation */
 #navigation { background: url(images/navigation.png) repeat-x 0 0; height: 50px; line-height: 50px; font-size: 14px; position: relative; z-index: 20;}
 #navigation ul { list-style: none; list-style-position: outside; }
-#navigation ul li { float: left; padding-right: 103px; }
+#navigation ul li { float: left; padding-right: 93px; padding-left: 10px;}
 #navigation ul li.last { padding-right: 0; }
 #navigation ul li a { color: #f7fbfc; position: relative; float: left; }
 #navigation ul li a:hover { color: #1b1815; text-decoration: none; text-shadow: rgba(255,255,255,0.4) 1px 1px 1px; }
