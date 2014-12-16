@@ -7,8 +7,8 @@ body {
     line-height: 20px;
     font-family: arial, sans-serif;
     color: #806c6c;
-  	background: #dcd5bc;
-    min-width: 890px;
+  	background: #eee;
+    min-width: 980px;
 }
 
 a { color: #e10b0b; text-decoration: none; cursor: pointer; }
@@ -26,8 +26,8 @@ textarea { overflow: auto; }
 h2 { font-size: 22px; font-weight: normal; color: #3c2323; }
 h3 { font-size: 14px; }
 
-.shell { width: 890px; margin: 0 auto; }
-header { background: url(images/hfig.jpg) no-repeat center 8px; height: 138px; }
+.shell { width: 980px; margin: 0 auto; }
+header { background: url(images/hfig.jpg) no-repeat center 8px; height: 200px; }
 header .shell { position: relative; z-index: 40;}
 /*#logo { width: 126px; position: absolute; top: 12px; left: 0; font-size: 0; line-height: 0; }
 #logo a { height: 59px; display: block; background: url(images/logo.png) no-repeat 0 0; text-indent: -4000px; } */
@@ -42,38 +42,36 @@ header .shell { position: relative; z-index: 40;}
 /* end of contact */
 
 /* navigation */
-#navigation { background: url(images/navigation.png) repeat-x 0 0; height: 50px; line-height: 50px; font-size: 14px; position: relative; z-index: 20;}
+#navigation { /*background: url(images/navigation.png) repeat-x 0 0;*/ height: 50px; line-height: 50px; font-size: 14px; position: relative; z-index: 20; margin-top: -53px;}
 #navigation ul { list-style: none; list-style-position: outside; }
-#navigation ul li { float: left; padding-right: 93px; padding-left: 10px;}
+#navigation ul li { float: left; padding-right: 25px; padding-left: 15px;}/* padding-right sets the distance between neighboring two items */
 #navigation ul li.last { padding-right: 0; }
-#navigation ul li a { color: #f7fbfc; position: relative; float: left; }
-#navigation ul li a:hover { color: #1b1815; text-decoration: none; text-shadow: rgba(255,255,255,0.4) 1px 1px 1px; }
-#navigation ul li a span { background: url(images/bottom-arrow.png) no-repeat 0 0; position: absolute; bottom: -14px; left: 50%; margin-left: -9px;  width: 18px; height: 19px; z-index: 10; display: none; }
-#navigation ul li a:hover span,
-#navigation ul li.active a span { display: block; }
+#navigation ul li a { color: #ddd; position: relative; float: left; }
+#navigation ul li a:hover { color: #fff; text-decoration: none; text-shadow: rgba(255,255,255,0.7) 0.5px 0.5px 0.5px; }
+/*#navigation ul li a span { background: url(images/bottom-arrow.png) no-repeat 0 0; position: absolute; bottom: -14px; left: 50%; margin-left: -9px;  width: 18px; height: 19px; z-index: 10; display: none; }*/
+/*#navigation ul li a:hover span,*/
+#navigation ul li.active a { color: #fff; text-shadow: rgba(255,255,255,0.7) 0.5px 0.5px 0.5px;}
 /* end of navigation */
 
 /* slider */
-.slider-holder { background: #000 url(images/slider-holder.png) no-repeat center 0; height: 407px; position: relative; z-index: 5; margin-top: -4px; }
+.slider-holder { background:  /*url(images/slider-holder.png)*/ no-repeat center 0; height: 407px; position: relative; z-index: 5; margin-top: -4px; }
 .slider-holder .shell { padding-top: 20px; position: relative; height: 390px; }
-.slider-holder .shell span.slider-shadow { background: url(images/slider-shadow.png) no-repeat 0 0; width: 952px; height: 45px; position: absolute; bottom: 0; left: -30px; }
-.flexslider { border: 1px solid #645c52; height: 344px; width: 887px; position: relative; margin: 0 auto; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px; }
+/*.slider-holder .shell span.slider-shadow { background: url(images/slider-shadow.png) no-repeat 0 0; width: 952px; height: 45px; position: absolute; bottom: 0; left: -30px; } */
+.flexslider { border: 1px solid #645c52; height: 344px; width: 950px; position: relative; margin: 0 auto; }
 .flexslider ul.slides { list-style: none; list-style-position: outside;  position: relative; overflow: hidden; }
-.flexslider ul.slides li { float: left; height: 344px; width: 887px; position: relative; }
-.flexslider ul.slides li img { width: 887px; height: 344px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px; }
-.flexslider ul.slides li .slide-cnt { padding: 24px 20px 22px 23px; position: absolute; top: 0px; right: 0; width: 205px; background: url(images/slide-cnt.png) repeat 0 0; min-height: 299px;
-border-radius: 0px 5px 6px 0; -moz-border-radius: 0px 5px 6px 0; -webkit-border-radius: 0px 5px 6px 0; -o-border-radius: 0px 5px 6px 0; }
+.flexslider ul.slides li { float: left; height: 344px; width: 950px; position: relative; }
+.flexslider ul.slides li img { width: 950px; height: 344px;}
+.flexslider ul.slides li .slide-cnt { padding: 24px 20px 22px 23px; position: absolute; top: 0px; right: 0; width: 205px; background: url(images/slide-cnt.png) repeat 0 0; min-height: 299px; }
 .flexslider ul.slides li .slide-cnt h2 {  color: #ccc8bd; font-size: 23px; line-height: 30px; padding-bottom: 20px; }
 .flexslider ul.slides li .slide-cnt p { color: #ccc8bd; font-size: 13px; padding-bottom: 42px; }
 .flexslider ul.slides li .slide-cnt p a { font-size: 11px; }
 .flexslider ul.slides li .slide-cnt a.slider-btn { width: 205px; height: 35px; padding: 0 0 0 0; background: url(images/slider-btn.png) repeat-x 0 0; display: block; text-align: center; position: relative; line-height: 35px;
-font-size: 18px; font-weight: bold; color: #000; box-shadow: 0px 0px 5px rgba(0,0,0,0.3); -moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.3); -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.3); -o-box-shadow: 0px 0px 5px rgba(0,0,0,0.3); 
-border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; -o-border-radius: 3px; text-shadow: rgba(255,255,255,0.1) 2px 2px 1px;}
+font-size: 18px; font-weight: bold; color: #000; box-shadow: 0px 0px 5px rgba(0,0,0,0.3); -moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.3); -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.3); -o-box-shadow: 0px 0px 5px rgba(0,0,0,0.3); }
 .flexslider ul.slides li .slide-cnt a.slider-btn:hover { text-decoration: none; background-position: 0 bottom; }
 /* end of slider */
 
 /* services */
-.services { background-color: #fff; padding-top: 26px; padding-bottom: 28px;  }
+.services { background-color: #fff; padding-top: 26px; padding-bottom: 28px; position: relative;}
 .services h2 { float: left; font-size: 22px; font-weight: normal; padding-bottom: 15px; padding-left: 3px; color: #3c2323; }
 .services a.all-services { float: right; font-size: 14px; margin-right: 12px; }
 .services .boxes { margin: 0 -11px 0 -3px; position: relative; width: 904px; }  
