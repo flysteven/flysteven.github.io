@@ -9,7 +9,7 @@ else
   {// code for IE6, IE5
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","机枪兵.xml",false);
+xmlhttp.open("GET","\xml\机枪兵.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML; 
 Engine=xmlDoc.getElementsByTagName("引擎");
@@ -36,7 +36,7 @@ document.getElementById("showCD").innerHTML=txt;
 <div id='showCD'>clickkkk:</div><br />
 <script type="text/javascript">
 document.write("<table border='1'>");
-document.write("<tr><td>序号</td><td>名称</td><td>素质</td><td>芯片</td><td>空间</td><td>负重</td><td>耐久</td><td>技能</td><td>效果</td></tr>");
+//document.write("<tr><td>序号</td><td>名称</td><td>素质</td><td>芯片</td><td>空间</td><td>负重</td><td>耐久</td><td>技能</td><td>效果</td></tr>");
 for (var i=0;i<Engine.length;i++)
   {
   document.write("<tr><td>");
