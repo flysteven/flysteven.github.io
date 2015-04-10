@@ -1,156 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="utf-8" />
-	<title>Li Group</title>
-	<link rel="shortcut icon" type="image/x-icon" href="css/images/favicon.ico" />
-	<link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="all" />
-	
-	<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
-	<!--[if lt IE 9]>
-		<script src="js/modernizr.custom.js"></script>
-	<![endif]-->
-	<script src="js/jquery.flexslider-min.js" type="text/javascript"></script>
-	<script src="js/functions.js" type="text/javascript"></script>
-</head>
-<body>
-	<!-- wrapper -->
-	<div  id="wrapper">
-		<!-- header -->
-		<header>
-		<div class="shell">
-			<a href="http://www.pku.edu.cn/" class="text">Peking University</a>
-			<a href="http://icqm.pku.edu.cn/" class="textr">International Center for Quantum Materials (ICQM)</a>
-		</div>
-		</header>
-		<!-- end of header -->
-		<!-- navigation -->
-		<nav id="navigation">
-			<div class="shell">
-				<ul>
-					<li class="active"><a href="index.html"><span></span>Home</a></li>
-					<li><a href="research.html"><span class="bottom-arr"></span>Research</a></li>
-					<li><a href="people.html"><span class="bottom-arr"></span>People</a></li>
-					<li><a href="facility.html"><span class="bottom-arr"></span>Facility</a></li>
-					<li><a href="publications.html"><span class="bottom-arr"></span>Publications</a></li>
-					<li><a href="links.html"><span class="bottom-arr"></span>Links</a></li>
-				</ul>
-			</div>	
-		</nav>
-		<!-- end of navigation -->
-		<!-- slider-holder -->
-		<div class="slider-holder">
-			<div class="shell">
-				<span class="slider-shadow"></span>
-				<div class="slider flexslider">
-					<ul class="slides">
-						<li>
-							<img src="" alt="" />
-							<div class="slide-cnt">
-								<h2>TITLE</h2>
-								<p>Description .. <a href="#">See More</a></p>
-								<a href="#" class="slider-btn">Click Me</a>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>	
-		</div>	
-		<!-- end of slider-holder -->
-		
+<script type="text/javascript">
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.open("GET","cd_catalog.xml",false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML; 
+x=xmlDoc.getElementsByTagName("CD");
 
-		<!-- services -->
-		<section class="services">
-			<div class="shell">
-				<div class="boxes">
-					<h2>New Section</h2>
-					<a href="#" class="all-services">+ Explore All</a>
-					<div class="cl">&nbsp;</div>
-					<div class="box">
-						<a href="#">
-							<img src="css/images/logo-design.png" alt="" />
-							<h3>pic1</h3>
-						</a>
-					</div>
-					<div class="box">
-						<a href="#">
-							<img src="css/images/logo-design.png" alt="" />
-							<h3>pic2</h3>
-						</a>
-					</div>
-					<div class="box">
-						<a href="#">
-							<img src="css/images/logo-design.png" alt="" />
-							<h3>pic3</h3>
-						</a>
-					</div>
-					<div class="box">
-						<a href="#">
-							<img src="css/images/logo-design.png" alt="" />
-							<h3>pic4</h3>
-						</a>
-					</div>
-					<div class="cl">&nbsp;</div>
-				</div>
-			</div>
-		</section>
-		<!-- end of services -->
-		<!-- main -->
-		<div class="main">
-			<div class="shell">
-				<section>
-					<!-- content -->
-					<div class="content">
-						<h2>Main</h2>
-						<p>paragraph1.</p>
-						<img src="css/images/logo-design.png" alt="" /></a>	
-						<p>paragraph2.</p>
-					</div>
-					<!-- end of content -->
-					<!-- aside -->
-					<aside>
-						<div class="widget">
-							<h2>Sect1</h2>
-							<div class="img-holder">
-								<a href="#"><img src="css/images/projects-img2.png" alt="" /></a>	
-							</div>
-							<div class="img-holder">
-								<a href="#"><img src="css/images/projects-img2.png" alt="" /></a>	
-							</div>
-							<div class="img-holder">
-								<a href="#"><img src="css/images/projects-img2.png" alt="" /></a>	
-							</div>
-							<div class="cl">&nbsp;</div>
-						</div>
-						<div class="widget">
-							<h2>Sect2</h2>
-							<div class="img-holder">
-								<a href="#"><img src="css/images/clients-img3.png" alt="" /></a>
-							</div>
-							<div class="img-holder">
-								<a href="#"><img src="css/images/clients-img3.png" alt="" /></a>
-							</div>
-							<div class="img-holder">
-								<a href="#"><img src="css/images/clients-img3.png" alt="" /></a>
-							</div>
-							<div class="cl">&nbsp;</div>
-						</div>
-					</aside>
-					<!-- end of aside -->
-					<div class="cl">&nbsp;</div>
-				</section>
-			</div>
-		</div>
-		<!-- end of main -->
-		<div id="footer-push"></div>
-	</div>
-	<!-- end of wrapper -->
-	<div id="footer">
-		<div class="shell">
-			<p class="copy">Copyright &copy; 2014 Li Group, All Rights Reserved.</a></p>
-			<div class="cl">&nbsp;</div>
-		</div>
-	</div>
+function displayCDInfo(i)
+{
+artist=(x[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue);
+title=(x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue);
+year=(x[i].getElementsByTagName("YEAR")[0].childNodes[0].nodeValue);
+country=(x[i].getElementsByTagName("COUNTRY")[0].childNodes[0].nodeValue);
+company=(x[i].getElementsByTagName("COMPANY")[0].childNodes[0].nodeValue);
+price=(x[i].getElementsByTagName("PRICE")[0].childNodes[0].nodeValue);
+txt="Artist: "+artist+"<br />Title: "+title+"<br />Year: "+year+"<br />Country: "+country+"<br />Company: "+company+"<br />Price: "+price  ;
+document.getElementById("showCD").innerHTML=txt;
+}
+</script>
+</head>
+
+<body>
+<div id='showCD'>clickkkk:</div><br />
+<script type="text/javascript">
+document.write("<table border='1'>");
+for (var i=0;i<x.length;i++)
+  { 
+  document.write("<tr onclick='displayCDInfo(" + i + ")'>");
+  document.write("<td>");
+  document.write(x[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue);
+  document.write("</td><td>");
+  document.write(x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue);
+  document.write("</td></tr>");
+  }
+document.write("</table>");
+</script>
+
 </body>
 </html>
