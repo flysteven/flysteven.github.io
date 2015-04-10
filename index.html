@@ -21,13 +21,13 @@ Engine=xmlDoc.getElementsByTagName("引擎");
 <div id='showCD'>clickkkk:</div><br />
 <script type="text/javascript">
 document.write("<table border='1'>");
-
+document.write("<tr><td>序号</td><td>名称</td><td>素质</td><td>芯片</td><td>空间</td><td>负重</td><td>耐久</td><td>耗能</td><td>技能</td><td>效果</td></tr>");
 for (var i=0;i<Engine.length;i++)
   {
   document.write("<tr><td>");
   document.write(Engine[i].getElementsByTagName("序号")[0].childNodes[0].nodeValue);
   document.write("</td><td>");
-  //document.write(Engine[i].getElementsByTagName("名称")[0].childNodes[0].nodeValue);
+  document.write(Engine[i].getElementsByTagName("名称")[0].childNodes[0].nodeValue);
   document.write("</td><td>");
   document.write(Engine[i].getElementsByTagName("素质")[0].childNodes[0].nodeValue);
   document.write("</td><td>");
