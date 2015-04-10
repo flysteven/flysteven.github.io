@@ -9,26 +9,11 @@ else
   {// code for IE6, IE5
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","\xml\机枪兵.xml",false);
+xmlhttp.open("GET","机枪兵.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML; 
 Engine=xmlDoc.getElementsByTagName("引擎");
 
-function displayEngineInfo(i)
-{
-no=(Engine[i].getElementsByTagName("序号")[0].childNodes[0].nodeValue);
-name=(Engine[i].getElementsByTagName("名称")[0].childNodes[0].nodeValue);
-education=(Engine[i].getElementsByTagName("素质")[0].childNodes[0].nodeValue);
-complexity=(Engine[i].getElementsByTagName("芯片")[0].childNodes[0].nodeValue);
-space=(Engine[i].getElementsByTagName("空间")[0].childNodes[0].nodeValue);
-loadcap=(Engine[i].getElementsByTagName("负重")[0].childNodes[0].nodeValue);
-health=(Engine[i].getElementsByTagName("耐久")[0].childNodes[0].nodeValue);
-energy=(Engine[i].getElementsByTagName("耗能")[0].childNodes[0].nodeValue);
-skill=(Engine[i].getElementsByTagName("技能")[0].childNodes[0].nodeValue);
-value=(Engine[i].getElementsByTagName("效果")[0].childNodes[0].nodeValue);
-txt="Artist: "+artist+"<br />Title: "+title+"<br />Year: "+year+"<br />Country: "+country+"<br />Company: "+company+"<br />Price: "+price  ;
-document.getElementById("showCD").innerHTML=txt;
-}
 </script>
 </head>
 
@@ -42,7 +27,7 @@ for (var i=0;i<Engine.length;i++)
   document.write("<tr><td>");
   document.write(Engine[i].getElementsByTagName("序号")[0].childNodes[0].nodeValue);
   document.write("</td><td>");
-  document.write(Engine[i].getElementsByTagName("名称")[0].childNodes[0].nodeValue);
+  //document.write(Engine[i].getElementsByTagName("名称")[0].childNodes[0].nodeValue);
   document.write("</td><td>");
   document.write(Engine[i].getElementsByTagName("素质")[0].childNodes[0].nodeValue);
   document.write("</td><td>");
