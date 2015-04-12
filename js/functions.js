@@ -10,6 +10,9 @@ function init(){
 	xmlhttp.send();
 	xmlDoc=xmlhttp.responseXML; 
 	Engine=xmlDoc.getElementsByTagName("引擎");
+	document.getElementById("deleteNode").onclick = delNode;
+}
+function makeTable(){
 	document.write("<table border='0.5'>");
 	document.write("<tr><td>序号</td><td>名称</td><td>素质</td><td>芯片</td><td>空间</td><td>负重</td><td>耐久</td><td>耗能</td><td>技能</td><td>效果</td></tr>");
 	for (var i=0;i<Engine.length;i++){
@@ -36,4 +39,10 @@ function init(){
 		document.write("</td></tr>");
 	}
 	document.write("</table>");
+}
+function(){
+	var parent = document.getElementsByTagName("body");
+	var node = document.getElementById("showCD");
+	parent.removeChild(node);
+	
 }
