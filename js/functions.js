@@ -10,8 +10,13 @@ function init(){
 	xmlhttp.send();
 	xmlDoc=xmlhttp.responseXML; 
 	Engine=xmlDoc.getElementsByTagName("引擎");
-	document.getElementById("makeNewTable").onclick = makeTableTest;
+	document.getElementById("makeNewTable").onclick = alertTest;
 	document.getElementById("deleteNode").onclick = delNode;
+}
+
+function alertTest(){
+	alert("hjha");
+	reture false;
 }
 
 function makeTableTest(){
