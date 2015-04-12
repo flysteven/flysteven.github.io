@@ -1,5 +1,11 @@
 window.onload = init;
 function init(){
+	document.getElementById("makeNewTable").onclick = alertTest;
+	document.getElementById("deleteNode").onclick = delNode;
+	
+}
+
+function loadData(){
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
@@ -10,8 +16,6 @@ function init(){
 	xmlhttp.send();
 	xmlDoc=xmlhttp.responseXML; 
 	Engine=xmlDoc.getElementsByTagName("引擎");
-	document.getElementById("makeNewTable").onclick = alertTest;
-	document.getElementById("deleteNode").onclick = delNode;
 }
 
 function alertTest(){
