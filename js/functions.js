@@ -40,7 +40,7 @@ function makeTable(){
 	}
 	document.write("</table>");
 }
-function(){
+function delNode(){
 	var parent = document.getElementsByTagName("body");
 	var node = document.getElementById("showCD");
 	parent.removeChild(node);
