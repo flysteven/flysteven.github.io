@@ -1,0 +1,16 @@
+* { margin: 0; padding: 0; outline: 0; }
+
+body, html { height: 100%; }
+
+body {
+	font-size: 12px;
+	line-height: 20px;
+	font-family: arial, sans-serif;
+	color: #806c6c;
+	background: #eee;
+	min-width: 980px;
+}
+
+table{
+	border-collapse:collapse;
+}
