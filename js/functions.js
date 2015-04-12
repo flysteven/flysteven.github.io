@@ -10,12 +10,13 @@ function init(){
 	xmlhttp.send();
 	xmlDoc=xmlhttp.responseXML; 
 	Engine=xmlDoc.getElementsByTagName("引擎");
-	document.getElementById("makeNewTable").onclick = makeTableTest();
+	document.getElementById("makeNewTable").onclick = makeTableTest;
 	document.getElementById("deleteNode").onclick = delNode;
 }
 
 function makeTableTest(){
-	var newText = document.createTextNode("testtest");
+	var inText = "testtest";
+	var newText = document.createTextNode(inText);
 	var newGraf = document.createElement("p");
 	newGraf.appendChild(newText);
 	var docBody = document.getElementsByTagName("body")[0];
