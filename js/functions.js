@@ -10,8 +10,31 @@ function init(){
 	xmlhttp.send();
 	xmlDoc=xmlhttp.responseXML; 
 	Engine=xmlDoc.getElementsByTagName("引擎");
+	document.getElementById("makeNewTable").onclick = makeEngineTable(Engine);
 	document.getElementById("deleteNode").onclick = delNode;
 }
+
+function makeEngineTable(Engine){
+	var nodeBox = document.getElementById("tablebox");
+	var newTable = document.createElement("table");
+	newTable.setAttribute("id","nntable");
+	var newTr = document.createElement("tr");
+	var newTd = document.createElement("td");
+	newTd.appendChild(document.createTextNode("序号"))；
+	newTr.appendChild(newTd);
+	var newTd = document.createElement("td");
+	newTd.appendChild(document.createTextNode("名称"))；
+	newTr.appendChild(newTd);
+	var newTd = document.createElement("td");
+	newTd.appendChild(document.createTextNode("素质"))；
+	newTr.appendChild(newTd);
+	var newTd = document.createElement("td");
+	newTd.appendChild(document.createTextNode("芯片"))；
+	newTr.appendChild(newTd);
+	newTable.appendChild(newTr);
+	nodeBox.appendChild(newTable);
+}
+
 function makeTable(){
 	document.write("<table border='0.5'>");
 	document.write("<tr><td>序号</td><td>名称</td><td>素质</td><td>芯片</td><td>空间</td><td>负重</td><td>耐久</td><td>耗能</td><td>技能</td><td>效果</td></tr>");
