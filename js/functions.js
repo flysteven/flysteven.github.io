@@ -10,11 +10,20 @@ function init(){
 	xmlhttp.send();
 	xmlDoc=xmlhttp.responseXML; 
 	Engine=xmlDoc.getElementsByTagName("引擎");
-	document.getElementById("makeNewTable").onclick = makeEngineTable(Engine);
+	document.getElementById("makeNewTable").onclick = makeTableTest();
 	document.getElementById("deleteNode").onclick = delNode;
 }
 
-function makeEngineTable(Engine){
+function makeTableTest(){
+	var newText = document.createTextNode("testtest");
+	var newGraf = document.createElement("p");
+	newGraf.appendChild(newText);
+	var docBody = document.getElementsByTagName("body")[0];
+	docBody.appendChild(newGraf);
+	return false;
+}
+
+function makeEngineTable(){
 	var nodeBox = document.getElementById("tablebox");
 	var newTable = document.createElement("table");
 	newTable.setAttribute("id","nntable");
