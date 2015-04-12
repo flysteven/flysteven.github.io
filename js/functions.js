@@ -41,7 +41,7 @@ function makeTable(){
 	document.write("</table>");
 }
 function delNode(){
-	var node = document.getElementById("showCD");
+	var node = document.getElementById("showCD1");
 	node.parentNode.removeChild(node);
 	
 }
