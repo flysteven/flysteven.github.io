@@ -41,6 +41,7 @@ body {
     border-right-width: 1px;  
     border-right-style: solid;  
     border-right-color: #c4cdd4;  
+	padding-left: 3px;
 }  
 .table0 td {  
     border-right-width: 1px;  
