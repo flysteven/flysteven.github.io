@@ -7,21 +7,31 @@ function alertTest(){
 	alert("this button works!");
 }
 
-function loadData(){
-	
+function UnitClass(name){
+		this.name = name;
 }
-
-function addJQB(){
+	
+	UnitClass.prototype.lData = loadData;
+	
+function loadData(){
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
 	else{// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	xmlhttp.open("GET","/dat/机枪兵.xml",false);
+	xmlhttp.open("GET","/dat/"+this.name+".xml",false);
 	xmlhttp.send();
 	xmlDoc=xmlhttp.responseXML; 
-	Engine=xmlDoc.getElementsByTagName("引擎");
+	this.xmlDoc = xmlDoc;
+	}
+	
+
+function addJQB(){
+	
+	var JQB = new UnitClass("机枪兵");
+	JQB.lData();
+	Engine=this.xmlDoc.getElementsByTagName("引擎");
 	for(var i=0;i<Engine.length;i++){
 		var tab=document.getElementById("proc"); // 获得表格  
 		var rows=tab.rows; // 表格ROW对象  
