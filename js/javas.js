@@ -31,7 +31,7 @@ function addJQB(){
 	
 	var JQB = new UnitClass("机枪兵");
 	JQB.lData();
-	Engine=this.xmlDoc.getElementsByTagName("引擎");
+	Engine=JQB.xmlDoc.getElementsByTagName("引擎");
 	for(var i=0;i<Engine.length;i++){
 		var tab=document.getElementById("proc"); // 获得表格  
 		var rows=tab.rows; // 表格ROW对象  
