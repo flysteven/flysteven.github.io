@@ -1,6 +1,5 @@
 window.onload = init;
 function init(){
-	loadData;
 	document.getElementById("makeNewTable").onclick = addRowToTable;
 }
 
@@ -9,6 +8,10 @@ function alertTest(){
 }
 
 function loadData(){
+	
+}
+
+function addRowToTable(){
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
@@ -19,9 +22,6 @@ function loadData(){
 	xmlhttp.send();
 	xmlDoc=xmlhttp.responseXML; 
 	Engine=xmlDoc.getElementsByTagName("引擎");
-}
-
-function addRowToTable(){
 	var tab=document.getElementById("proc"); // 获得表格  
 	var rows=tab.rows; // 表格ROW对象  
 	var row1=tab.insertRow(rows.length); // 插入一行rows是一个数组，代表没一行，索引从0开始  
