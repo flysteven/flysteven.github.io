@@ -42,6 +42,7 @@ body {
     border-right-style: solid;  
     border-right-color: #c4cdd4;  
 	padding-left: 5px;
+	padding-right: 5px;
 	width: 200px;
 }  
 .table0 td {  
@@ -51,6 +52,9 @@ body {
     border-bottom-width: 1px;  
     border-bottom-style: solid;  
     border-bottom-color: #c4cdd4;  
+	padding-left: 5px;
+	padding-right: 5px;
+	width: 200px;
 }  
 
 header { background: url(images/hfig.jpg) no-repeat center 5px; height: 190px; }
