@@ -14,7 +14,7 @@ body {
 .table0 {  
     font-family: "宋体";  
     font-size: 14px;  
-    width: 600px; 
+    width: 720px; 
     border-top-width: 1px;  
     border-top-style: solid;  
     border-top-color: #c4cdd4;        
@@ -62,4 +62,4 @@ header { background: url(images/hfig.jpg) no-repeat center 5px; height: 190px; }
 .navigation { width: 230px; margin: 0 auto; float: left; background: #fff; }
 .navigation ul { list-style: none; list-style-position: outside; float: left; padding-left: 15px; padding-top: 7px; }
 
-.content { width: 735px; margin: 0 auto; float: left; background: #fff; padding-left: 15px;}
+.content { width: 720px; margin: 0 auto; float: left; background: #fff; padding-left: 15px; padding-right: 15px; }
