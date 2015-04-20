@@ -19,6 +19,6 @@ header { background: url(images/hfig.jpg) no-repeat center 5px; height: 227px; }
 
 .main { width: 980px; margin: 0 auto; }
 
-.navigation { width: 270px; margin: 0 auto; float: left;}
+.navigation { width: 270px; margin: 0 auto; float: left; background: #333; }
 
-.content { width: 710px; margin: 0 auto; float: left;}
+.content { width: 710px; margin: 0 auto; float: left; background: #abc; }
