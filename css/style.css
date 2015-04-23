@@ -72,4 +72,4 @@ ul li a.menuLink{
 .navigation { width: 230px; height: 100%; margin: 0 auto; float: left; background: #fff; }
 .navigation ul { list-style: none; list-style-position: outside; float: left; padding-left: 15px; padding-top: 7px; }
 
-.content { width: 720px; margin: 0 auto; float: left; background: #fff; padding-left: 15px; padding-right: 15px; }
+.content { width: 720px; margin-bottom: 5px; float: left; background: #fff; padding-left: 15px; padding-right: 15px; padding-top: 10px; padding-bottom: 10px;}

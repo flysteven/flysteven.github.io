@@ -1,0 +1,13 @@
+{"total":11,"rows":[
+    {"name":"耐久","value":"1","group":"属性","editor":"text"},
+    {"name":"能源","value":"2","group":"属性","editor":"text"},
+    {"name":"装甲","value":"3","group":"属性","editor":"text"},
+    {"name":"速度","value":"","group":"属性","editor":"text"},
+	{"name":"视野","value":"","group":"属性","editor":"text"},
+	{"name":"火力","value":"","group":"属性","editor":"text"},
+	{"name":"射程","value":"","group":"属性","editor":"text"},
+	{"name":"间隔","value":"","group":"属性","editor":"text"},
+	{"name":"芯片","value":"","group":"限制","editor":"text"},
+	{"name":"空间","value":"","group":"限制","editor":"text"},
+	{"name":"负重","value":"","group":"限制","editor":"text"},
+]}

@@ -1,6 +1,7 @@
 window.onload = init;
 function init(){
 	document.getElementById("jiqiangbing").onclick = addJQB;
+	document.getElementById("ipt1").onchange = inputChange111;
 }
 
 function alertTest(){
@@ -47,4 +48,8 @@ function addJQB(){
 		row1.insertCell(8).innerHTML=Engine[i].getElementsByTagName("技能")[0].childNodes[0].nodeValue;
 		row1.insertCell(9).innerHTML=Engine[i].getElementsByTagName("效果")[0].childNodes[0].nodeValue;
 	}
+}
+
+function inputChange111(){
+	$('#vv').text(236-$('#ipt1').val()-$('#ipt2').val()-$('#ipt3').val()-$('#ipt4').val());
 }
