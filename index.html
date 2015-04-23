@@ -6,8 +6,10 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script> 
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/metro/easyui.css">
 	<script src="js/javas.js"></script>
 	<script src="js/jq.js"></script>
+	<script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 </head>
 
 <body>
@@ -15,24 +17,18 @@
 
 </header>
 <div class="main">
-<div id="tabs">
-	<ul id="theMenu">
-		<li><a class="menuLink">步兵系</a>
-			<ul>
-				<li><a id="jiqiangbing" href=#><span></span>机枪兵</a></li>
-				<li><a href=#><span></span>机枪兵</a></li>
-				<li><a href=#><span></span>机枪兵</a></li>
+
+<div class="easyui-accordion" style="width:500px;height:300px;">
+        <div title="步兵系" data-options="iconCls:'icon-ok'" style="overflow:auto;padding:10px;">
+			<ul class="easyui-datalist" title="Basic DataList" lines="true" style="width:230px;height:250px">
+				<li><a id="jiqiangbing" href=#>机枪兵</a></li>
+				<li><a id="jiqiangbing" href=#>机枪兵</a></li>
+				<li><a id="jiqiangbing" href=#>机枪兵</a></li>
 			</ul>
-		</li>
-		<li><a class="menuLink">机械系</a>
-			<ul>
-				<li><a id="jiqiangbing" href=#><span></span>机枪兵</a></li>
-				<li><a href=#><span></span>机枪兵</a></li>
-				<li><a href=#><span></span>机枪兵</a></li>
-			</ul>
-		</li>
-	</ul>
+        </div>
 </div>
+
+
 <div class="content">
 <p>this is main content</p>
 <div id="table_div">
