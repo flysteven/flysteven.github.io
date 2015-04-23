@@ -7,6 +7,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script> 
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/metro/easyui.css">
+	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/gray.css">
 	<script src="js/javas.js"></script>
 	<script src="js/jq.js"></script>
 	<script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
@@ -27,8 +28,39 @@
 			</ul>
         </div>
 </div>
-
-
+<!-- attribute -->
+<div class="content">
+<p>人物属性点</p>
+<div style="margin:20px 0;">
+    <input class="easyui-numberspinner" style="width:80px;float:left;" data-options="
+                onChange: function(value){
+                    $('#vv').text(value);
+                }
+            "></input>
+	<input class="easyui-numberspinner" style="width:80px;float:left;" data-options="
+                onChange: function(value){
+                    $('#vv').text(value);
+                }
+            "></input>
+	<input class="easyui-numberspinner" style="width:80px;float:left;" data-options="
+                onChange: function(value){
+                    $('#vv').text(value);
+                }
+            "></input>
+	<input class="easyui-numberspinner" style="width:80px;float:left;" data-options="
+                onChange: function(value){
+                    $('#vv').text(value);
+                }
+            "></input>
+</div>
+    <div style="margin:10px 0;">
+        Value: <span id="vv"></span>
+    </div>
+</div>
+<!-- summary -->
+<div class="content">
+</div>
+<!-- table -->
 <div class="content">
 <p>this is main content</p>
 <div id="table_div">
