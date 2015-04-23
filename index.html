@@ -31,16 +31,22 @@
 <!-- attribute -->
 <div class="content">
 <p>人物属性点</p>
+<div>
+统帅<br/>
 <input id="ipt1" class="easyui-numberspinner" style="width:80px;float:left;padding-left:20px;" data-options="
                 onChange: function(value){
                     $('#vv').text($('#ipt2').value);
                 }
             "></input>
+</div>
+<div>
+素质<br/>
 <input id="ipt2" class="easyui-numberspinner" style="width:80px;float:left;padding-left:20px;" data-options="
                 onChange: function(value){
                     $('#vv').text(value);
                 }
             "></input>
+</div>
 <input id="ipt3" class="easyui-numberspinner" style="width:80px;float:left;padding-left:20px;" data-options="
                 onChange: function(value){
                     $('#vv').text(value);
