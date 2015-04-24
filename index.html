@@ -68,6 +68,16 @@
 		</div>
 		<div class="easyui-layout" data-options="fit:true">
 			<div data-options="region:'center'" title="装备选择" style="height:180px">
+				<table class="easyui-datagrid" style="width:400px;height:250px"
+						data-options="url:'dat/ttt.json',fitColumns:true,singleSelect:true">
+					<thead>
+						<tr>
+							<th data-options="field:'序号',width:100">Code</th>
+							<th data-options="field:'名称',width:100">Name</th>
+							<th data-options="field:'素质',width:100,align:'right'">Price</th>
+						</tr>
+					</thead>
+				</table>
 			</div>
 		</div>
 	</div>
