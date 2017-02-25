@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>This is title</title>
+	
+	<link rel="stylesheet" type="text/css" href="js/jquery/jquery-easyui-1.4.2/themes/metro/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery/jquery-easyui-1.4.2/themes/color.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery/jquery-easyui-1.4.2/themes/icon.css">
+	<script type="text/javascript" src="js/jquery/jquery-easyui-1.4.2/jquery.min.js"></script> 
+	<script type="text/javascript" src="js/jquery/jquery-easyui-1.4.2/jquery.easyui.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<script src="js/jq.js"></script>
+</head>
+
+<body>
+<header>
+
+</header>
+<div class="main">
+<div class="easyui-layout" style="width:980px;height:500px;">
+    <div region="west" split="true" title="Navigator" style="width:235px;">
+        <div class="easyui-accordion" style="width:225px;height:300px;float:left;margin-right:5px">
+			<div title="12" data-options="iconCls:'icon-ok'" style="overflow:auto;padding:0px;">
+				<ul class="easyui-datalist"  lines="true" style="width:222px;height:250px">
+					<li><a id="jiqiangbing" href=#>2</a></li>
+					<li><a id="jiqiangbing" href=#>2</a></li>
+					<li><a id="jiqiangbing" href=#>2</a></li>
+				</ul>
+			</div>
+		</div>
+    </div>
+	<!-- attribute -->
+    <div id="content" region="center" style="padding:0px;">
+		<div class="easyui-layout" style="width:980px;height:100px;">
+			<div data-options="region:'center'" title="11" style="padding:10px;">
+				<div style="float:left;padding-right:20px;">
+					01<br/>
+					<input id="ipt1" value="5" style="width:80px;" required="required" ></input>
+				</div>
+				<div style="float:left;padding-right:20px;">
+					02<br/>
+					<input id="ipt2" value="5" style="width:80px;" required="required" ></input>
+				</div>
+				<div style="float:left;padding-right:20px;">
+					03<br/>
+					<input id="ipt3" value="5" style="width:80px;" required="required" ></input>
+				</div>
+				<div style="float:left;padding-right:20px;">
+					04<br/>
+					<input id="ipt4" value="5" style="width:80px;" required="required" ></input>
+				</div>
+					<div style="float:left;padding-left:0px;">
+					05<span id="vv">216</span>
+				</div>
+			</div>
+		</div>
+		<div class="easyui-layout" style="width:980px;height:180px;">
+			<div data-options="region:'center'" title="gg" style="height:180px">
+				<table id="pg" class="easyui-propertygrid" style="width:200px,height:100px" data-options="
+					url:'t.json',
+					method:'get',
+					showGroup:true,
+					scrollbarSize:0
+				">
+				</table>
+			</div>
+		</div>
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'center'" title="hh" style="height:180px">
+				<table class="easyui-datagrid" style="width:400px;height:250px"
+						data-options="url:'dat/ttt.json',fitColumns:true,singleSelect:true">
+					<thead>
+						<tr>
+							<th data-options="field:'1',width:100">Code</th>
+							<th data-options="field:'1',width:100">Name</th>
+							<th data-options="field:'1',width:100,align:'right'">Price</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>

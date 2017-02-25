@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/about_forum.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/about_uiuc.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/agenda.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/assets/css/main.css" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/assets/sass/ie9.scss" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/speaker.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/staff.html" charset="UTF-8" />
+    <file url="file://D:/CSSA Web/InnovationForum/dist/css/normalize.css" charset="UTF-8" />
+  </component>
+</project>
