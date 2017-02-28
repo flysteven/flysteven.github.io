@@ -1,0 +1,2 @@
+请将 2017 Banner_wocssa.jpg 放进images文件夹，
+main.css放入assets->css
