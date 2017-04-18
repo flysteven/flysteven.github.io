@@ -21,7 +21,7 @@ html, body{
 		border: 0;
 		font-size: 100%;
 		font: inherit;
-		vertical-align: baseline;
+		vertical-align: middle;
 	}
 
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -2350,10 +2350,9 @@ html, body{
 	}
 
 		#header h1 {
-			padding: 0 0 2.75em 0;
 			margin: 0;
             display: inline-block;
-        vertical-align: bottom;
+        vertical-align: middle;
 		}
 
 			#header h1 a {
@@ -2676,10 +2675,6 @@ html, body{
 				padding: 2em 0 0 0;
 			}
 
-				#header h1 {
-					padding: 0 0 1.75em 0;
-				}
-
 		/* Banner */
 
 			#banner {
@@ -2742,7 +2737,7 @@ html, body{
 			}
 
 			h1, h2, h3, h4, h5, h6 {
-				margin-bottom: 0.5em;
+				margin: 1em;
 			}
 
 			header p {
@@ -2953,9 +2948,7 @@ html, body{
 					border-top: solid 1px rgba(255, 255, 255, 0.05);
 					color: #888;
 					display: block;
-					height: 48px;
-					line-height: 48px;
-					padding: 0 1em 0 1em;
+					padding: 1em 1em 1em 2em;
 					text-decoration: none;
 				}
 
@@ -3078,6 +3071,8 @@ html, body{
 			.wrapper {
 				padding: 2em 0 1px 0;
 			}
+        
+        
 
 	}
 
@@ -3178,6 +3173,10 @@ html, body{
         width: 100%;
     }
 
+    .sponsor-logo#co-host{
+        max-width: initial;
+    }
+
 
 /** banner (new) */
 #banner-n {
@@ -3185,4 +3184,27 @@ html, body{
 
 #banner-n > img {
     width: 100%
+}
+
+#speaker-tb td {
+	padding: 5%;
+}
+
+span.image.featured{
+	height: 15em;
+}
+span.image.featured > img{
+	height: 100%;
+}
+
+
+.img-abt > img {
+    width: 100%;
+}
+
+@media screen and (max-width: 736px) {
+    span.image.featured {
+        height: 6em;
+    }
+        
 }
