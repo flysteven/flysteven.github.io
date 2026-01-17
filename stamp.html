@@ -1,0 +1,286 @@
+Below is a html code written by AI, to be used as a web app on iphone. Please go through it and find any potential issues.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocStamp - Multi-Page</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #eee; padding: 20px; text-align: center; }
+        
+        .step-container { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { font-size: 1rem; color: #555; margin-top: 0; }
+        
+        .btn { background: #007bff; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; display: inline-block; font-weight: bold; margin: 5px; border: none; }
+        .btn-green { background: #28a745; }
+        .btn-red { background: #dc3545; }
+        
+        .ready { border-left: 5px solid #28a745; }
+        
+        /* Container for all pages */
+        #document-viewer {
+            margin-top: 10px;
+            display: none; /* Hidden until loaded */
+            background: #555;
+            padding: 20px 0;
+            max-width: 100%;
+            overflow: auto;
+            max-height: 80vh;
+            border: 4px solid #ccc;
+        }
+
+        /* Individual Page Wrapper */
+        .page-wrapper {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: inline-block;
+        }
+
+        canvas { 
+            display: block; 
+            background: white; 
+            cursor: crosshair; 
+        }
+        
+        #status { font-weight: bold; color: #555; margin: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>DocStamp (Multi-Page)</h1>
+
+    <div class="step-container" id="step1">
+        <h2>Step 1: Setup Stamp</h2>
+        <label class="btn">
+            Select Stamp Image (PNG)
+            <input type="file" id="stamp-input" accept="image/png" style="display:none">
+        </label>
+        <div id="stamp-status" style="font-size: 0.9rem; color: #888; margin-top:5px;">No stamp selected</div>
+    </div>
+
+    <div class="step-container" id="step2" style="opacity: 0.5; pointer-events: none;">
+        <h2>Step 2: Load Document</h2>
+        <label class="btn">
+            Select PDF
+            <input type="file" id="pdf-input" accept="application/pdf" style="display:none">
+        </label>
+    </div>
+
+    <div id="status">Waiting for inputs...</div>
+
+    <div id="document-viewer"></div>
+
+    <div id="controls" style="display:none; margin-top: 20px;">
+        <button class="btn btn-red" onclick="undoLastStamp()">Undo Last Stamp</button>
+        <button class="btn btn-green" onclick="downloadPDF()">Download Full PDF</button>
+    </div>
+
+    <script>
+        // --- SETUP ---
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const MAX_WIDTH = 1200; // Slightly reduced for multi-page memory safety
+
+        let pdfDoc = null;
+        
+        // We store "history" to support Undo. 
+        // Format: { canvasId: "page-1", imageData: ImageDataObject }
+        let actionHistory = []; 
+
+        const finalStampImage = new Image();
+        let isStampLoaded = false;
+		
+		let originalPdfName = "";
+
+
+        // --- 1. HANDLE STAMP ---
+        document.getElementById('stamp-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                finalStampImage.onload = function() {
+                    isStampLoaded = true;
+                    document.getElementById('step1').classList.add('ready');
+                    document.getElementById('step2').style.opacity = '1';
+                    document.getElementById('step2').style.pointerEvents = 'auto';
+                    document.getElementById('stamp-status').innerText = "✅ " + file.name + " loaded!";
+                    document.getElementById('status').innerText = "Now select your PDF.";
+                };
+                finalStampImage.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+
+        // --- 2. HANDLE PDF UPLOAD ---
+        document.getElementById('pdf-input').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+			originalPdfName = file.name || "document.pdf";
+            if (!file) return;
+
+            document.getElementById('status').innerText = "Processing Pages...";
+            document.getElementById('document-viewer').innerHTML = ""; // Clear previous
+            actionHistory = []; // Clear history
+
+            try {
+                const buffer = await file.arrayBuffer();
+                pdfDoc = await pdfjsLib.getDocument(buffer).promise;
+                
+                // RENDER ALL PAGES LOOP
+                for (let i = 1; i <= pdfDoc.numPages; i++) {
+                    document.getElementById('status').innerText = `Rendering Page ${i} of ${pdfDoc.numPages}...`;
+                    await renderPage(i);
+                }
+
+                document.getElementById('step2').classList.add('ready');
+                document.getElementById('document-viewer').style.display = 'block';
+                document.getElementById('controls').style.display = 'block';
+                document.getElementById('status').innerText = "Scroll and tap any page to stamp!";
+
+            } catch (err) {
+                alert("PDF Error: " + err.message);
+            }
+        });
+
+        async function renderPage(num) {
+            const page = await pdfDoc.getPage(num);
+            const rawVP = page.getViewport({ scale: 1.0 });
+            
+            // Limit width for memory safety
+            let scale = 1.5;
+            if (rawVP.width * scale > MAX_WIDTH) scale = MAX_WIDTH / rawVP.width;
+            
+            const viewport = page.getViewport({ scale: scale });
+
+            // Create Canvas Element for this page
+            const wrapper = document.createElement('div');
+            wrapper.className = 'page-wrapper';
+            
+            const canvas = document.createElement('canvas');
+            canvas.id = `page-${num}`;
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            
+            wrapper.appendChild(canvas);
+            document.getElementById('document-viewer').appendChild(wrapper);
+
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+            // Add Event Listeners for Stamping
+            canvas.addEventListener('mousedown', (e) => handleInput(e, canvas));
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                // Create a fake event object to reuse handleInput
+                const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY, target: canvas };
+                handleInput(fakeEvent, canvas);
+            }, { passive: false });
+        }
+
+
+        // --- 3. STAMP LOGIC ---
+        function handleInput(e, canvas) {
+            if (!isStampLoaded) {
+                alert("Please select a stamp image first!");
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+
+            // 1. SAVE STATE BEFORE STAMPING (For Undo)
+            // We push the current pixel data to history
+            const currentPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            actionHistory.push({
+                canvasId: canvas.id,
+                imageData: currentPixels
+            });
+
+            // 2. CALCULATE COORDINATES
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+
+            // 3. DRAW
+            drawStamp(ctx, x, y, canvas.width);
+        }
+
+        function drawStamp(ctx, x, y, canvasWidth) {
+            ctx.save();
+            
+            // Randomize
+            const angle = (Math.random() * 50 - 25) * (Math.PI / 180);
+            
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.globalCompositeOperation = 'multiply';
+            
+            // Size: 19% of page width
+            const w = canvasWidth * 0.19;
+            const h = w * (finalStampImage.height / finalStampImage.width);
+            ctx.drawImage(finalStampImage, -w/2, -h/2, w, h);
+            
+            ctx.restore();
+        }
+
+
+        // --- 4. CONTROLS ---
+        function undoLastStamp() {
+            if (actionHistory.length === 0) {
+                alert("Nothing to undo!");
+                return;
+            }
+
+            // Pop the last action
+            const lastAction = actionHistory.pop();
+            const canvas = document.getElementById(lastAction.canvasId);
+            const ctx = canvas.getContext('2d');
+
+            // Restore pixels
+            ctx.putImageData(lastAction.imageData, 0, 0);
+        }
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            
+            // Initialize PDF with first page dimensions
+            const firstCanvas = document.querySelector('canvas');
+            if(!firstCanvas) return;
+
+            const orientation = firstCanvas.width > firstCanvas.height ? 'l' : 'p';
+            const pdf = new jsPDF({
+                orientation: orientation,
+                unit: 'px',
+                format: [firstCanvas.width, firstCanvas.height]
+            });
+
+            // Loop through ALL canvases
+            const allCanvases = document.querySelectorAll('canvas');
+            
+            allCanvases.forEach((canvas, index) => {
+                if (index > 0) {
+                    // Add new page for subsequent canvases
+                    pdf.addPage([canvas.width, canvas.height], canvas.width > canvas.height ? 'l' : 'p');
+                }
+
+                // Compress to JPEG 0.75
+                const imgData = canvas.toDataURL('image/jpeg', 0.75);
+                pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+            });
+
+			const baseName = (originalPdfName || "document").replace(/\.pdf$/i, "");
+			const yyyymmdd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+			pdf.save(`${baseName}_stamped_${yyyymmdd}.pdf`);
+        }
+    </script>
+</body>
+</html>
