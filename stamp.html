@@ -36,13 +36,17 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
 
         /* Individual Page Wrapper */
         .page-wrapper {
+			width: 100%;
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             display: inline-block;
         }
 
         canvas { 
-            display: block; 
+            width: 100%;
+			height: auto;
+			max-width: 100%;
+			display: block; 
             background: white; 
             cursor: crosshair; 
         }
@@ -76,6 +80,7 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
     <div id="document-viewer"></div>
 
     <div id="controls" style="display:none; margin-top: 20px;">
+		<button class="btn" id="stamp-mode-btn" onclick="toggleStampMode()">Stamp Mode: OFF</button>
         <button class="btn btn-red" onclick="undoLastStamp()">Undo Last Stamp</button>
         <button class="btn btn-green" onclick="downloadPDF()">Download Full PDF</button>
     </div>
@@ -95,6 +100,8 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
         let isStampLoaded = false;
 		
 		let originalPdfName = "";
+		
+		let isStampMode = false;
 
 
         // --- 1. HANDLE STAMP ---
@@ -177,18 +184,30 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
             // Add Event Listeners for Stamping
             canvas.addEventListener('mousedown', (e) => handleInput(e, canvas));
             canvas.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                const touch = e.touches[0];
-                // Create a fake event object to reuse handleInput
-                const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY, target: canvas };
-                handleInput(fakeEvent, canvas);
-            }, { passive: false });
+				if (!isStampMode) return; // allow normal scroll/zoom
+				e.preventDefault();       // only block gestures in stamp mode
+
+				const touch = e.touches[0];
+				const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY, target: canvas };
+				handleInput(fakeEvent, canvas);
+			}, { passive: false });
         }
 
 
         // --- 3. STAMP LOGIC ---
-        function handleInput(e, canvas) {
-            if (!isStampLoaded) {
+        function toggleStampMode() {
+			isStampMode = !isStampMode;
+			const btn = document.getElementById('stamp-mode-btn');
+			btn.innerText = `Stamp Mode: ${isStampMode ? 'ON' : 'OFF'}`;
+			document.getElementById('status').innerText = isStampMode
+				? "Stamp Mode ON: tap to stamp (scroll carefully)"
+				: "Stamp Mode OFF: scroll / pinch-zoom normally";
+		}
+
+		function handleInput(e, canvas) {
+            if (!isStampMode) return;
+			
+			if (!isStampLoaded) {
                 alert("Please select a stamp image first!");
                 return;
             }
