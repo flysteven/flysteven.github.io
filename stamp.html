@@ -1,14 +1,15 @@
-Below is a html code written by AI, to be used as a web app on iphone. Please go through it and find any potential issues.
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DocStamp - Multi-Page</title>
+    <title>DocStamp - Universal</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         body { font-family: -apple-system, sans-serif; background: #eee; padding: 20px; text-align: center; }
@@ -25,7 +26,7 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
         /* Container for all pages */
         #document-viewer {
             margin-top: 10px;
-            display: none; /* Hidden until loaded */
+            display: none; 
             background: #555;
             padding: 20px 0;
             max-width: 100%;
@@ -36,7 +37,7 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
 
         /* Individual Page Wrapper */
         .page-wrapper {
-			width: 100%;
+            width: 100%;
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             display: inline-block;
@@ -44,19 +45,35 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
 
         canvas { 
             width: 100%;
-			height: auto;
-			max-width: 100%;
-			display: block; 
+            height: auto;
+            max-width: 100%;
+            display: block; 
             background: white; 
             cursor: crosshair; 
         }
         
-        #status { font-weight: bold; color: #555; margin: 10px; }
+        #status { font-weight: bold; color: #555; margin: 10px; white-space: pre-wrap; }
+
+        /* Hidden area for rendering Word docs before snapshotting */
+        #hidden-render-zone {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 794px; /* A4 width in pixels (approx) */
+            padding: 40px;
+            background: white;
+            color: black;
+            font-family: serif;
+            line-height: 1.5;
+        }
+        #hidden-render-zone img { max-width: 100%; }
     </style>
 </head>
 <body>
 
-    <h1>DocStamp (Multi-Page)</h1>
+    <h1>DocStamp (Universal)</h1>
+
+    <div id="hidden-render-zone"></div>
 
     <div class="step-container" id="step1">
         <h2>Step 1: Setup Stamp</h2>
@@ -70,9 +87,12 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
     <div class="step-container" id="step2" style="opacity: 0.5; pointer-events: none;">
         <h2>Step 2: Load Document</h2>
         <label class="btn">
-            Select PDF
-            <input type="file" id="pdf-input" accept="application/pdf" style="display:none">
+            Select File(s)
+            <input type="file" id="doc-input" accept="application/pdf, .docx, image/png, image/jpeg, image/jpg" multiple style="display:none">
         </label>
+        <div style="font-size: 0.8rem; color: #666; margin-top:5px;">
+            Supports: PDF, Word (.docx), Images (JPG/PNG)
+        </div>
     </div>
 
     <div id="status">Waiting for inputs...</div>
@@ -80,7 +100,7 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
     <div id="document-viewer"></div>
 
     <div id="controls" style="display:none; margin-top: 20px;">
-		<button class="btn" id="stamp-mode-btn" onclick="toggleStampMode()">Stamp Mode: OFF</button>
+        <button class="btn" id="stamp-mode-btn" onclick="toggleStampMode()">Stamp Mode: OFF</button>
         <button class="btn btn-red" onclick="undoLastStamp()">Undo Last Stamp</button>
         <button class="btn btn-green" onclick="downloadPDF()">Download Full PDF</button>
     </div>
@@ -88,21 +108,15 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
     <script>
         // --- SETUP ---
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        const MAX_WIDTH = 1200; // Slightly reduced for multi-page memory safety
+        const MAX_WIDTH = 1200; 
 
         let pdfDoc = null;
-        
-        // We store "history" to support Undo. 
-        // Format: { canvasId: "page-1", imageData: ImageDataObject }
         let actionHistory = []; 
-
         const finalStampImage = new Image();
         let isStampLoaded = false;
-		
-		let originalPdfName = "";
-		
-		let isStampMode = false;
-
+        let originalDocName = "";
+        let isStampMode = false;
+        let globalPageCount = 0; // To track unique IDs across multiple files
 
         // --- 1. HANDLE STAMP ---
         document.getElementById('stamp-input').addEventListener('change', function(e) {
@@ -117,32 +131,40 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
                     document.getElementById('step2').style.opacity = '1';
                     document.getElementById('step2').style.pointerEvents = 'auto';
                     document.getElementById('stamp-status').innerText = "✅ " + file.name + " loaded!";
-                    document.getElementById('status').innerText = "Now select your PDF.";
+                    document.getElementById('status').innerText = "Now select your Document(s).";
                 };
                 finalStampImage.src = event.target.result;
             };
             reader.readAsDataURL(file);
         });
 
+        // --- 2. HANDLE DOCUMENT UPLOAD (Universal) ---
+        document.getElementById('doc-input').addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
 
-        // --- 2. HANDLE PDF UPLOAD ---
-        document.getElementById('pdf-input').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-			originalPdfName = file.name || "document.pdf";
-            if (!file) return;
-
-            document.getElementById('status').innerText = "Processing Pages...";
-            document.getElementById('document-viewer').innerHTML = ""; // Clear previous
-            actionHistory = []; // Clear history
+            // Reset View
+            document.getElementById('status').innerText = "Processing files...";
+            document.getElementById('document-viewer').innerHTML = ""; 
+            actionHistory = []; 
+            globalPageCount = 0;
+            originalDocName = files[0].name; // Use first filename as base
 
             try {
-                const buffer = await file.arrayBuffer();
-                pdfDoc = await pdfjsLib.getDocument(buffer).promise;
-                
-                // RENDER ALL PAGES LOOP
-                for (let i = 1; i <= pdfDoc.numPages; i++) {
-                    document.getElementById('status').innerText = `Rendering Page ${i} of ${pdfDoc.numPages}...`;
-                    await renderPage(i);
+                // Process files sequentially to maintain order
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    document.getElementById('status').innerText = `Processing ${file.name} (${i+1}/${files.length})...`;
+                    
+                    if (file.type === 'application/pdf') {
+                        await processPDF(file);
+                    } 
+                    else if (file.type.startsWith('image/')) {
+                        await processImage(file);
+                    }
+                    else if (file.name.endsWith('.docx') || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                        await processWord(file);
+                    }
                 }
 
                 document.getElementById('step2').classList.add('ready');
@@ -151,94 +173,186 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
                 document.getElementById('status').innerText = "Scroll and tap any page to stamp!";
 
             } catch (err) {
-                alert("PDF Error: " + err.message);
+                console.error(err);
+                alert("Error processing file: " + err.message);
+                document.getElementById('status').innerText = "Error occurred.";
             }
         });
 
-        async function renderPage(num) {
-            const page = await pdfDoc.getPage(num);
-            const rawVP = page.getViewport({ scale: 1.0 });
-            
-            // Limit width for memory safety
-            let scale = 1.5;
-            if (rawVP.width * scale > MAX_WIDTH) scale = MAX_WIDTH / rawVP.width;
-            
-            const viewport = page.getViewport({ scale: scale });
+        // --- PROCESSING HELPERS ---
 
-            // Create Canvas Element for this page
+        // A. Process PDF
+        async function processPDF(file) {
+            const buffer = await file.arrayBuffer();
+            const loadingTask = pdfjsLib.getDocument(buffer);
+            const pdf = await loadingTask.promise;
+            
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const rawVP = page.getViewport({ scale: 1.0 });
+                
+                let scale = 1.5;
+                if (rawVP.width * scale > MAX_WIDTH) scale = MAX_WIDTH / rawVP.width;
+                
+                const viewport = page.getViewport({ scale: scale });
+                const canvas = createPageCanvas(viewport.width, viewport.height);
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                
+                await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+            }
+        }
+
+        // B. Process Image
+        function processImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        // Scale down if too huge
+                        if (width > MAX_WIDTH) {
+                            const ratio = MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                            height = height * ratio;
+                        }
+
+                        const canvas = createPageCanvas(width, height);
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // C. Process Word (DOCX)
+        // Uses Mammoth to get HTML -> Renders to hidden div -> Html2Canvas to snapshot
+        async function processWord(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            
+            // 1. Convert DOCX to HTML
+            const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+            const html = result.value; 
+            if (result.messages.length > 0) console.log("Mammoth msgs:", result.messages);
+
+            // 2. Render to hidden zone
+            const zone = document.getElementById('hidden-render-zone');
+            zone.innerHTML = html;
+
+            // 3. Snapshot with html2canvas
+            // Note: scale 2 for better text clarity
+            const canvas = await html2canvas(zone, { scale: 1.5 });
+            
+            // 4. Append to viewer
+            await appendCanvasToViewer(canvas);
+            
+            // 5. Cleanup
+            zone.innerHTML = "";
+        }
+
+        // --- DOM MANIPULATION ---
+
+        function createPageCanvas(w, h) {
             const wrapper = document.createElement('div');
             wrapper.className = 'page-wrapper';
             
+            globalPageCount++;
             const canvas = document.createElement('canvas');
-            canvas.id = `page-${num}`;
-            canvas.width = viewport.width;
-            canvas.height = viewport.height;
+            canvas.id = `page-${globalPageCount}`;
+            canvas.width = w;
+            canvas.height = h;
             
             wrapper.appendChild(canvas);
             document.getElementById('document-viewer').appendChild(wrapper);
 
-            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            setupCanvasEvents(canvas);
+            return canvas;
+        }
+
+        function appendCanvasToViewer(sourceCanvas) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'page-wrapper';
             
-            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+            globalPageCount++;
+            const canvas = document.createElement('canvas');
+            canvas.id = `page-${globalPageCount}`;
+            canvas.width = sourceCanvas.width;
+            canvas.height = sourceCanvas.height;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(sourceCanvas, 0, 0);
 
-            // Add Event Listeners for Stamping
+            wrapper.appendChild(canvas);
+            document.getElementById('document-viewer').appendChild(wrapper);
+            setupCanvasEvents(canvas);
+        }
+
+        function setupCanvasEvents(canvas) {
+            // Mouse
             canvas.addEventListener('mousedown', (e) => handleInput(e, canvas));
+            // Touch
             canvas.addEventListener('touchstart', (e) => {
-				if (!isStampMode) return; // allow normal scroll/zoom
-				e.preventDefault();       // only block gestures in stamp mode
+                if (!isStampMode) return; 
+                e.preventDefault(); 
 
-				const touch = e.touches[0];
-				const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY, target: canvas };
-				handleInput(fakeEvent, canvas);
-			}, { passive: false });
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect(); // re-calc for precision
+                
+                // Construct pseudo-event
+                const fakeEvent = { 
+                    clientX: touch.clientX, 
+                    clientY: touch.clientY, 
+                    target: canvas 
+                };
+                handleInput(fakeEvent, canvas);
+            }, { passive: false });
         }
 
 
-        // --- 3. STAMP LOGIC ---
+        // --- 3. STAMP LOGIC (Unchanged mostly) ---
         function toggleStampMode() {
-			isStampMode = !isStampMode;
-			const btn = document.getElementById('stamp-mode-btn');
-			btn.innerText = `Stamp Mode: ${isStampMode ? 'ON' : 'OFF'}`;
-			document.getElementById('status').innerText = isStampMode
-				? "Stamp Mode ON: tap to stamp (scroll carefully)"
-				: "Stamp Mode OFF: scroll / pinch-zoom normally";
-		}
+            isStampMode = !isStampMode;
+            const btn = document.getElementById('stamp-mode-btn');
+            btn.innerText = `Stamp Mode: ${isStampMode ? 'ON' : 'OFF'}`;
+            document.getElementById('status').innerText = isStampMode
+                ? "Stamp Mode ON: tap to stamp."
+                : "Stamp Mode OFF: scroll / zoom normally";
+        }
 
-		function handleInput(e, canvas) {
+        function handleInput(e, canvas) {
             if (!isStampMode) return;
-			
-			if (!isStampLoaded) {
+            if (!isStampLoaded) {
                 alert("Please select a stamp image first!");
                 return;
             }
 
             const ctx = canvas.getContext('2d');
 
-            // 1. SAVE STATE BEFORE STAMPING (For Undo)
-            // We push the current pixel data to history
+            // Save History
             const currentPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
             actionHistory.push({
                 canvasId: canvas.id,
                 imageData: currentPixels
             });
 
-            // 2. CALCULATE COORDINATES
+            // Calc Coords
             const rect = canvas.getBoundingClientRect();
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
             const x = (e.clientX - rect.left) * scaleX;
             const y = (e.clientY - rect.top) * scaleY;
 
-            // 3. DRAW
             drawStamp(ctx, x, y, canvas.width);
         }
 
         function drawStamp(ctx, x, y, canvasWidth) {
             ctx.save();
-            
-            // Randomize
             const angle = (Math.random() * 50 - 25) * (Math.PI / 180);
-            
             ctx.translate(x, y);
             ctx.rotate(angle);
             ctx.globalCompositeOperation = 'multiply';
@@ -247,34 +361,32 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
             const w = canvasWidth * 0.19;
             const h = w * (finalStampImage.height / finalStampImage.width);
             ctx.drawImage(finalStampImage, -w/2, -h/2, w, h);
-            
             ctx.restore();
         }
 
-
-        // --- 4. CONTROLS ---
         function undoLastStamp() {
             if (actionHistory.length === 0) {
                 alert("Nothing to undo!");
                 return;
             }
-
-            // Pop the last action
             const lastAction = actionHistory.pop();
             const canvas = document.getElementById(lastAction.canvasId);
-            const ctx = canvas.getContext('2d');
-
-            // Restore pixels
-            ctx.putImageData(lastAction.imageData, 0, 0);
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.putImageData(lastAction.imageData, 0, 0);
+            }
         }
 
+        // --- 4. DOWNLOAD (Universal PDF Generator) ---
         function downloadPDF() {
             const { jsPDF } = window.jspdf;
             
-            // Initialize PDF with first page dimensions
-            const firstCanvas = document.querySelector('canvas');
-            if(!firstCanvas) return;
+            // Look for pages
+            const allCanvases = document.querySelectorAll('canvas');
+            if(allCanvases.length === 0) return;
 
+            // Setup first page
+            const firstCanvas = allCanvases[0];
             const orientation = firstCanvas.width > firstCanvas.height ? 'l' : 'p';
             const pdf = new jsPDF({
                 orientation: orientation,
@@ -282,23 +394,19 @@ Below is a html code written by AI, to be used as a web app on iphone. Please go
                 format: [firstCanvas.width, firstCanvas.height]
             });
 
-            // Loop through ALL canvases
-            const allCanvases = document.querySelectorAll('canvas');
-            
+            // Add all pages
             allCanvases.forEach((canvas, index) => {
                 if (index > 0) {
-                    // Add new page for subsequent canvases
-                    pdf.addPage([canvas.width, canvas.height], canvas.width > canvas.height ? 'l' : 'p');
+                    const orient = canvas.width > canvas.height ? 'l' : 'p';
+                    pdf.addPage([canvas.width, canvas.height], orient);
                 }
-
-                // Compress to JPEG 0.75
-                const imgData = canvas.toDataURL('image/jpeg', 0.75);
+                const imgData = canvas.toDataURL('image/jpeg', 0.80);
                 pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
             });
 
-			const baseName = (originalPdfName || "document").replace(/\.pdf$/i, "");
-			const yyyymmdd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-			pdf.save(`${baseName}_stamped_${yyyymmdd}.pdf`);
+            const baseName = (originalDocName || "document").replace(/\.(pdf|docx|png|jpg|jpeg)$/i, "");
+            const yyyymmdd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+            pdf.save(`${baseName}_signed_${yyyymmdd}.pdf`);
         }
     </script>
 </body>
